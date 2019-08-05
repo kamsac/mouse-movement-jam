@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
+    <title><%= htmlWebpackPlugin.options.title %></title>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            background-color: #111;
+            height: 100%;
+            width: 100%;
+        }
+        body {
+            display: grid;
+        }
+        canvas {
+            border: 2px solid #000;
+            place-self: center;
+        }
+        canvas, img {
+            image-rendering: optimizeSpeed;
+            image-rendering: -moz-crisp-edges;
+            image-rendering: -webkit-optimize-contrast;
+            image-rendering: optimize-contrast;
+            image-rendering: pixelated;
+            -ms-interpolation-mode: nearest-neighbor;
+        }
+    </style>
+</head>
+<body>
+</body>
+</html>
