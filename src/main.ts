@@ -1,1 +1,3 @@
-console.log('TOMATO');
+import Game from './Game';
+
+new Game();
