@@ -1,6 +1,5 @@
 import Game from './Game';
 import MainCharacter from './MainCharacter';
-import Input from './Input';
 import Area from './Area';
 import Point from './Point';
 import AreaVariant from './AreaVariant';
