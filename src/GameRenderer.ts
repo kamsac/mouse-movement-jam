@@ -2,6 +2,7 @@ import Game from './Game';
 import World from './World';
 import Size from './Size';
 import MainCharacterRenderer from './MainCharacterRenderer';
+import AreaRenderer from './AreaRenderer';
 
 export const canvasSize: Size = {
     width: 800,
@@ -14,6 +15,7 @@ export default class GameRenderer {
     private context!: CanvasRenderingContext2D;
 
     private mainCharacterRenderer: MainCharacterRenderer;
+    private areaRenderer: AreaRenderer;
 
     public constructor(game: Game) {
         this.game = game;
@@ -22,10 +24,14 @@ export default class GameRenderer {
         this.attachCanvas();
 
         this.mainCharacterRenderer = new MainCharacterRenderer(this.context);
+        this.areaRenderer = new AreaRenderer(this.context);
     }
 
     public render(world: World): void {
         this.clearCanvas();
+        world.areas.forEach((area) => {
+            this.areaRenderer.render(area);
+        });
         this.mainCharacterRenderer.render(world.player);
     }
 

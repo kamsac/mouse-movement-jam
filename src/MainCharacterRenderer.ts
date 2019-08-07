@@ -7,7 +7,7 @@ export default class MainCharacterRenderer {
     }
 
     public render(player: MainCharacter): void {
-        this.context.fillStyle = 'tomato';
+        this.context.fillStyle = '#444';
         this.context.strokeStyle = '#000';
         this.context.lineWidth = 2;
         this.context.beginPath();

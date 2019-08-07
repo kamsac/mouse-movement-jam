@@ -55,7 +55,7 @@ export default class Game {
     private update(deltaTimeInSeconds: number): void {
         this.tick++;
         this.input.update();
-        this.world.update(this.input);
+        this.world.update();
     }
 
     private render(): void {
