@@ -11,6 +11,23 @@ export default abstract class WorldObject {
         this.position = options.position;
         this.collisionRadius = options.collisionRadius;
     }
+
+    public getDistance(otherWorldObject: WorldObject): number {
+        const x: number = this.position.x - otherWorldObject.position.x;
+        const y: number = this.position.y - otherWorldObject.position.y;
+        return Math.sqrt(x*x+y*y);
+    }
+
+    public getDistanceQuick(otherWorldObject: WorldObject): number {
+        const x: number = this.position.x - otherWorldObject.position.x;
+        const y: number = this.position.y - otherWorldObject.position.y;
+        return x + y;
+    }
+
+    public isColliding = (otherWorldObject: WorldObject): boolean => {
+        const distance: number = this.getDistance(otherWorldObject);
+        return (this.collisionRadius + otherWorldObject.collisionRadius) > distance;
+    }
 }
 
 interface WorldObjectOptions {

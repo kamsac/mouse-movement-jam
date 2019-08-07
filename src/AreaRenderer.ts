@@ -9,26 +9,24 @@ interface AreaVisualSettings {
 
 export default class AreaRenderer {
     private context: CanvasRenderingContext2D;
-    private visualSettingsByVariant: AreaVisualSettings;
+    public static visualSettingsByVariant: AreaVisualSettings = {
+        [AreaVariant.RED]: {
+            color: '#f44',
+        },
+        [AreaVariant.GREEN]: {
+            color: '#4f4',
+        },
+        [AreaVariant.BLUE]: {
+            color: '#44f',
+        },
+    };
 
     constructor(context: CanvasRenderingContext2D) {
         this.context = context;
-
-        this.visualSettingsByVariant = {
-            [AreaVariant.RED]: {
-                color: '#f44',
-            },
-            [AreaVariant.GREEN]: {
-                color: '#4f4',
-            },
-            [AreaVariant.BLUE]: {
-                color: '#44f',
-            },
-        }
     }
 
     public render(area: Area): void {
-        this.context.fillStyle = this.visualSettingsByVariant[area.variant].color;
+        this.context.fillStyle = AreaRenderer.visualSettingsByVariant[area.variant].color;
         this.context.strokeStyle = '#000';
         this.context.lineWidth = 0;
         this.context.beginPath();

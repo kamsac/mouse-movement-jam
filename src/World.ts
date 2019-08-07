@@ -27,7 +27,7 @@ export default class World {
         });
     }
 
-    private spawnSomeExampleAreas() {
+    private spawnSomeExampleAreas(): void {
         this.areas.push(
             new Area(
                 this,
