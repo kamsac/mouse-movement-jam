@@ -29,10 +29,19 @@ export default class GameRenderer {
 
     public render(world: World): void {
         this.clearCanvas();
+        this.centerCamera(world);
+
         world.areas.forEach((area) => {
             this.areaRenderer.render(area);
         });
         this.mainCharacterRenderer.render(world.player);
+    }
+
+    private centerCamera(world: World): void {
+        this.context.translate(
+            -world.player.position.x + canvasSize.width/2,
+            -world.player.position.y + canvasSize.height/2,
+        );
     }
 
     private clearCanvas(): void {
