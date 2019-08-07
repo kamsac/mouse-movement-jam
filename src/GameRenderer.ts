@@ -65,5 +65,9 @@ export default class GameRenderer {
 
     private attachCanvas(): void {
         document.body.appendChild(this.canvas);
+
+        this.canvas.addEventListener('mousedown', () => {
+            this.canvas.requestPointerLock();
+        });
     }
 }
