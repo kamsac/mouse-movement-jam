@@ -4,6 +4,7 @@ import Size from './Size';
 import MainCharacterRenderer from './MainCharacterRenderer';
 import AreaRenderer from './AreaRenderer';
 import Point from './Point';
+import { createSpring } from 'spring-animator';
 
 export const canvasSize: Size = {
     width: 800,
@@ -14,12 +15,22 @@ interface CameraSettings {
     scale: number;
     offset: Point;
     ghosting: number;
+    followSpring: {
+        stiffness: number;
+        dampening: number;
+    }
 }
 
 export default class GameRenderer {
     private game: Game;
     public canvas!: HTMLCanvasElement;
     private context!: CanvasRenderingContext2D;
+
+    private targetCameraPosition: Point;
+    private cameraSpring: {
+        x: any;
+        y: any;
+    };
 
     private cameraSettings: CameraSettings;
     private mainCharacterRenderer: MainCharacterRenderer;
@@ -35,8 +46,18 @@ export default class GameRenderer {
             scale: 1,
             offset: new Point(0, 0),
             ghosting: 0.4,
+            followSpring: {
+                stiffness: 0.03,
+                dampening: 0.2,
+            }
         };
 
+        this.cameraSpring = {
+            x: createSpring(this.cameraSettings.followSpring.stiffness, this.cameraSettings.followSpring.dampening, this.game.world.player.position.x),
+            y: createSpring(this.cameraSettings.followSpring.stiffness, this.cameraSettings.followSpring.dampening, this.game.world.player.position.y),
+        };
+
+        this.targetCameraPosition = new Point(0, 0);
         this.mainCharacterRenderer = new MainCharacterRenderer(this.context);
         this.areaRenderer = new AreaRenderer(this.context);
     }
@@ -48,6 +69,16 @@ export default class GameRenderer {
         this.offsetCamera();
         this.scaleCamera();
 
+        this.cameraSpring.x.setDestination(this.targetCameraPosition.x);
+        this.cameraSpring.y.setDestination(this.targetCameraPosition.y);
+        this.cameraSpring.x.tick();
+        this.cameraSpring.y.tick();
+
+        this.context.translate(
+            this.cameraSpring.x.getCurrentValue(),
+            this.cameraSpring.y.getCurrentValue(),
+        );
+
         world.areas.forEach((area) => {
             this.areaRenderer.render(area);
         });
@@ -55,17 +86,13 @@ export default class GameRenderer {
     }
 
     private centerCamera(world: World): void {
-        this.context.translate(
-            -world.player.position.x * this.cameraSettings.scale + canvasSize.width / 2,
-            -world.player.position.y * this.cameraSettings.scale + canvasSize.height / 2,
-        );
+        this.targetCameraPosition.x = -world.player.position.x * this.cameraSettings.scale + canvasSize.width / 2;
+        this.targetCameraPosition.y = -world.player.position.y * this.cameraSettings.scale + canvasSize.height / 2;
     }
 
     private offsetCamera(): void {
-        this.context.translate(
-            this.cameraSettings.offset.x * this.cameraSettings.scale,
-            this.cameraSettings.offset.y * this.cameraSettings.scale,
-        );
+        this.targetCameraPosition.x += this.cameraSettings.offset.x * this.cameraSettings.scale;
+        this.targetCameraPosition.y += this.cameraSettings.offset.y * this.cameraSettings.scale;
     }
 
     private scaleCamera(): void {

@@ -7,12 +7,12 @@ export default class Game {
     public readonly ticksPerSecond: number;
     public input: Input;
     public tick: number;
+    public world: World;
     private readonly tickTime: number; // ms
     private lastTickTime: number; // ms
     private currentUpdateLag: number; // ms
     private readonly maxUpdateLag: number; // ms
     private fpsStats!: Stats;
-    private world: World;
     private readonly gameRenderer: GameRenderer;
 
     public constructor() {
@@ -22,9 +22,9 @@ export default class Game {
         this.currentUpdateLag = 0;
         this.maxUpdateLag = 500;
         this.input = new Input();
+        this.world = new World(this);
         this.gameRenderer = new GameRenderer(this);
         this.tick = 0;
-        this.world = new World(this);
         this.initFpsStats();
         this.requestNextFrame();
     }

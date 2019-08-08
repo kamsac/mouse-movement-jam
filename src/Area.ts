@@ -2,7 +2,7 @@ import World from './World';
 import Point from './Point';
 import WorldObject from './WorldObject';
 import AreaVariant from './AreaVariant';
-import { createSpring } from 'spring-animator'
+import { createSpring } from 'spring-animator';
 
 interface AreaOptions {
     variant: AreaVariant;
