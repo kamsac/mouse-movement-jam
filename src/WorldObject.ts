@@ -28,6 +28,11 @@ export default abstract class WorldObject {
         const distance: number = this.getDistance(otherWorldObject);
         return (this.collisionRadius + otherWorldObject.collisionRadius) > distance;
     }
+
+    public isCollidingCenter = (otherWorldObject: WorldObject): boolean => {
+        const distance: number = this.getDistance(otherWorldObject);
+        return (otherWorldObject.collisionRadius) > distance;
+    }
 }
 
 interface WorldObjectOptions {

@@ -26,10 +26,8 @@ export default class MainCharacter extends WorldObject {
 
     private findClosestCollidingArea(): Area | undefined {
         return this.world.areas
-            .filter(this.isColliding)
-            .sort((areaA, areaB) => {
-                return this.getDistance(areaA) - this.getDistance(areaB);
-            })
+            .filter(this.isCollidingCenter)
+            .reverse()
             .find(() => true);
     }
 }
