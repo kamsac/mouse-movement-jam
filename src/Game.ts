@@ -33,6 +33,14 @@ export default class Game {
         this.world = new World(this);
     }
 
+    public secondsToTicks(seconds: number): number {
+        return seconds * this.ticksPerSecond;
+    }
+
+    public ticksToSeconds(ticks: number): number {
+        return ticks / this.ticksPerSecond;
+    }
+
     private requestNextFrame(): void {
         window.requestAnimationFrame((timestamp: number) => { this.gameLoop(timestamp); });
     }
