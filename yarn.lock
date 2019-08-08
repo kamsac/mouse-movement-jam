@@ -1611,6 +1611,11 @@ get-value@^2.0.3, get-value@^2.0.6:
   resolved "https://registry.yarnpkg.com/get-value/-/get-value-2.0.6.tgz#dc15ca1c672387ca76bd37ac0a395ba2042a2c28"
   integrity sha1-3BXKHGcjh8p2vTesCjlbogQqLCg=
 
+gl-vec4@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/gl-vec4/-/gl-vec4-1.0.1.tgz#97d96878281b14b532cbce101785dfd1cb340964"
+  integrity sha1-l9loeCgbFLUyy84QF4Xf0cs0CWQ=
+
 glob-parent@^3.1.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/glob-parent/-/glob-parent-3.1.0.tgz#9e6af6299d8d3bd2bd40430832bd113df906c5ae"
@@ -3607,6 +3612,13 @@ split-string@^3.0.1, split-string@^3.0.2:
   integrity sha512-NzNVhJDYpwceVVii8/Hu6DKfD2G+NrQHlS/V/qgv763EYudVwEcMQNxd2lh+0VrUByXN/oJkl5grOhYWvQUYiw==
   dependencies:
     extend-shallow "^3.0.0"
+
+spring-animator@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/spring-animator/-/spring-animator-2.0.0.tgz#36c0fd22c157c08b98adf3855f9cec0ab09c4e39"
+  integrity sha512-Tn2v9w1p0p8RkQtBbbRxhPLWUW/oj3mzNDk8892yudPCmXPkev7PBDQlaV5ULQpNIXF7WAggdHT6748libLWYw==
+  dependencies:
+    gl-vec4 "^1.0.1"
 
 ssri@^6.0.1:
   version "6.0.1"

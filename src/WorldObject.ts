@@ -5,11 +5,17 @@ export default abstract class WorldObject {
     public world: World;
     public position: Point;
     public collisionRadius: number;
+    public ticksLived: number;
 
     constructor(options: WorldObjectOptions) {
         this.world = options.world;
         this.position = options.position;
         this.collisionRadius = options.collisionRadius;
+        this.ticksLived = 0;
+    }
+
+    public update(): void {
+        this.ticksLived++;
     }
 
     public getDistance(otherWorldObject: WorldObject): number {
