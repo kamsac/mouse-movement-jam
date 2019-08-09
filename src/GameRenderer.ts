@@ -65,6 +65,8 @@ export default class GameRenderer {
     public render(world: World): void {
         this.clearCanvas();
 
+        this.renderScore();
+
         this.centerCamera(world);
         this.offsetCamera();
         this.scaleCamera();
@@ -83,6 +85,15 @@ export default class GameRenderer {
             this.areaRenderer.render(area);
         });
         this.mainCharacterRenderer.render(world.player);
+    }
+
+    private renderScore(): void {
+        const fontSize: number = 36;
+        this.context.font = `bold ${fontSize}px monospace`;
+        this.context.textAlign = 'left';
+        this.context.fillStyle = '#000';
+        this.context.lineWidth = 1;
+        this.context.fillText(`Score: ${this.game.getScore()}`, fontSize, fontSize);
     }
 
     private centerCamera(world: World): void {

@@ -1,6 +1,5 @@
 import MainCharacter from './MainCharacter';
 import AreaRenderer from './AreaRenderer';
-import Area from './Area';
 
 export default class MainCharacterRenderer {
     private context: CanvasRenderingContext2D;
@@ -20,16 +19,15 @@ export default class MainCharacterRenderer {
             0,
             Math.PI * 2
         );
+        this.context.closePath();
         this.context.stroke();
         this.context.fill();
 
-        if (player.currentArea) {
-            this.renderActiveArea(player, player.currentArea);
-        }
+        this.renderActiveArea(player);
     }
 
-    public renderActiveArea(player: MainCharacter, area: Area): void {
-        this.context.fillStyle = AreaRenderer.visualSettingsByVariant[area.variant].color;
+    public renderActiveArea(player: MainCharacter): void {
+        this.context.fillStyle = AreaRenderer.visualSettingsByVariant[player.world.activeAreaVariant].color;
         this.context.strokeStyle = '#000';
         this.context.lineWidth = 2;
         this.context.beginPath();
@@ -40,6 +38,7 @@ export default class MainCharacterRenderer {
             0,
             Math.PI * 2
         );
+        this.context.closePath();
         this.context.stroke();
         this.context.fill();
     }

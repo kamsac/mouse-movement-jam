@@ -10,12 +10,14 @@ export default class World {
     public tick: number;
     public player: MainCharacter;
     public areas: Area[];
+    public activeAreaVariant: AreaVariant;
 
     public constructor(game: Game) {
         this.game = game;
         this.tick = 0;
         this.player = new MainCharacter(this);
         this.areas = [];
+        this.activeAreaVariant = AreaVariant.BLUE;
     }
 
     public update(): void {
@@ -26,6 +28,13 @@ export default class World {
         });
 
         this.updateSpawningRandomAreas();
+        this.updateRandomizeActiveAreaVariant();
+    }
+
+    public updateRandomizeActiveAreaVariant(): void {
+        if (this.game.tick % this.game.secondsToTicks(2) === 0) {
+            this.activeAreaVariant = getRandomEnumValue(AreaVariant);
+        }
     }
 
     private updateSpawningRandomAreas(): void {

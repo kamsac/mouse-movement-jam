@@ -14,6 +14,7 @@ export default class Game {
     private readonly maxUpdateLag: number; // ms
     private fpsStats!: Stats;
     private readonly gameRenderer: GameRenderer;
+    private score: number;
 
     public constructor() {
         this.ticksPerSecond = 60;
@@ -23,14 +24,24 @@ export default class Game {
         this.maxUpdateLag = 500;
         this.input = new Input();
         this.world = new World(this);
-        this.gameRenderer = new GameRenderer(this);
+        this.score = 0;
         this.tick = 0;
+        this.gameRenderer = new GameRenderer(this);
         this.initFpsStats();
         this.requestNextFrame();
     }
 
     public restartWorld(): void {
         this.world = new World(this);
+        this.score = 0;
+    }
+
+    public addScore(points: number): void {
+        this.score += points;
+    }
+
+    public getScore(): number {
+        return this.score;
     }
 
     public secondsToTicks(seconds: number): number {

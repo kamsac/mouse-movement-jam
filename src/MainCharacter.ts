@@ -22,6 +22,7 @@ export default class MainCharacter extends WorldObject {
         this.position.y += movementDelta.y;
 
         this.currentArea = this.findClosestCollidingArea();
+        this.updateScore();
     }
 
     private findClosestCollidingArea(): Area | undefined {
@@ -29,5 +30,11 @@ export default class MainCharacter extends WorldObject {
             .filter(this.isCollidingCenter)
             .reverse()
             .find(() => true);
+    }
+
+    private updateScore(): void {
+        if (this.currentArea && this.currentArea.variant === this.world.activeAreaVariant) {
+            this.world.game.addScore(1);
+        }
     }
 }
