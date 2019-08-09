@@ -27,7 +27,6 @@ export default class Input {
     };
 
     private initEventListener(): void {
-        console.log('Input Manager init');
         window.removeEventListener('mousemove', this.handleMouseMove, false);
         window.addEventListener('mousemove', this.handleMouseMove, false);
     }

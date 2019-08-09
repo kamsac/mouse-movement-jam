@@ -1,13 +1,16 @@
 import World from './World';
 import Point from './Point';
+import shortid from 'shortid';
 
 export default abstract class WorldObject {
+    public readonly id: string;
     public world: World;
     public position: Point;
     public collisionRadius: number;
     public ticksLived: number;
 
     constructor(options: WorldObjectOptions) {
+        this.id = shortid.generate();
         this.world = options.world;
         this.position = options.position;
         this.collisionRadius = options.collisionRadius;

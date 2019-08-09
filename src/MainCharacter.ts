@@ -6,6 +6,7 @@ import Area from './Area';
 export default class MainCharacter extends WorldObject {
     public position: Point;
     public currentArea: Area | undefined;
+    private clearanceRequiredMovementForce: number;
 
     constructor(world: World) {
         super({
@@ -14,6 +15,7 @@ export default class MainCharacter extends WorldObject {
             collisionRadius: 16,
         });
         this.position = new Point(0, 0);
+        this.clearanceRequiredMovementForce = 10;
     }
 
     public update(): void {
@@ -22,7 +24,7 @@ export default class MainCharacter extends WorldObject {
         this.position.y += movementDelta.y;
 
         this.currentArea = this.findClosestCollidingArea();
-        this.updateScore();
+        this.updateAreaClearance();
     }
 
     private findClosestCollidingArea(): Area | undefined {
@@ -32,9 +34,13 @@ export default class MainCharacter extends WorldObject {
             .find(() => true);
     }
 
-    private updateScore(): void {
+    private updateAreaClearance(): void {
         if (this.currentArea && this.currentArea.variant === this.world.activeAreaVariant) {
-            this.world.game.addScore(1);
+            const movementDelta: Point = this.world.game.input.getMovementDelta();
+            const clearanceForce: number = Math.abs(movementDelta.x) + Math.abs(movementDelta.y);
+            if (clearanceForce > this.clearanceRequiredMovementForce) {
+                this.currentArea.applyClearing(1);
+            }
         }
     }
 }

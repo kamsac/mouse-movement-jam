@@ -38,5 +38,25 @@ export default class AreaRenderer {
             Math.PI * 2,
         );
         this.context.fill();
+
+        this.renderClearance(area);
+    }
+
+    private renderClearance(area: Area): void {
+        this.context.fillStyle = '#fff6';
+        this.context.strokeStyle = '#000';
+        this.context.lineWidth = 0;
+        this.context.beginPath();
+        this.context.arc(
+            area.position.x,
+            area.position.y,
+            area.collisionRadius * area.getClearProgress(),
+            0,
+            Math.PI * 2,
+        );
+        this.context.fill();
+
+        this.context.fillStyle = '#000';
+        this.context.fillText(``, area.position.x, area.position.y);
     }
 }

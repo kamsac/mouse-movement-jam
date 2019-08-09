@@ -31,14 +31,18 @@ export default class World {
         this.updateRandomizeActiveAreaVariant();
     }
 
+    public removeArea(id: string): void {
+        this.areas = this.areas.filter((area) => area.id !== id);
+    }
+
     public updateRandomizeActiveAreaVariant(): void {
-        if (this.game.tick % this.game.secondsToTicks(2) === 0) {
+        if (this.game.tick % this.game.secondsToTicks(3) === 0) {
             this.activeAreaVariant = getRandomEnumValue(AreaVariant);
         }
     }
 
     private updateSpawningRandomAreas(): void {
-        if (this.game.tick % this.game.secondsToTicks(0.5) === 0) {
+        if (this.game.tick % this.game.secondsToTicks(2) === 0) {
             this.spawnRandomArea();
         }
     }
