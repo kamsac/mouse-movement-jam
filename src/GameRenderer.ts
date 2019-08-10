@@ -67,6 +67,7 @@ export default class GameRenderer {
 
         this.renderScore();
 
+        this.updateScreenShake(world);
         this.centerCamera(world);
         this.offsetCamera();
         this.scaleCamera();
@@ -104,6 +105,18 @@ export default class GameRenderer {
     private offsetCamera(): void {
         this.targetCameraPosition.x += this.cameraSettings.offset.x * this.cameraSettings.scale;
         this.targetCameraPosition.y += this.cameraSettings.offset.y * this.cameraSettings.scale;
+    }
+
+    private setScreenShake(range: number): void {
+        this.cameraSettings.offset.x = Math.round(Math.random() * range - (range / 2));
+        this.cameraSettings.offset.y = Math.round(Math.random() * range - (range / 2));
+    }
+
+    private updateScreenShake(world: World): void {
+        const force: number = world.player.currentArea
+            ? world.player.currentArea.getClearProgress() * world.player.currentArea.collisionRadius * 4
+            : 0;
+        this.setScreenShake(force);
     }
 
     private scaleCamera(): void {
