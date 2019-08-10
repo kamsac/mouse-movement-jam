@@ -18,7 +18,11 @@ interface CameraSettings {
     followSpring: {
         stiffness: number;
         dampening: number;
-    }
+    },
+    areaClearShake: {
+        force: number;
+        duration: number
+    };
 }
 
 export default class GameRenderer {
@@ -49,7 +53,11 @@ export default class GameRenderer {
             followSpring: {
                 stiffness: 0.03,
                 dampening: 0.2,
-            }
+            },
+            areaClearShake: {
+                force: 2000,
+                duration: 0.1,
+            },
         };
 
         this.cameraSpring = {
@@ -117,6 +125,12 @@ export default class GameRenderer {
             ? world.player.currentArea.getClearProgress() * world.player.currentArea.collisionRadius * 4
             : 0;
         this.setScreenShake(force);
+
+        const isStillShaking: boolean = world.game.tick <
+            (world.lastClearedAreaTick + this.game.secondsToTicks(this.cameraSettings.areaClearShake.duration));
+        if (isStillShaking) {
+            this.setScreenShake(this.cameraSettings.areaClearShake.force);
+        }
     }
 
     private scaleCamera(): void {

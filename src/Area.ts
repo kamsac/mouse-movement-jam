@@ -55,6 +55,7 @@ export default class Area extends WorldObject {
     public getCleared(): void {
         this.world.game.addScore(100);
         this.world.removeArea(this.id);
+        this.world.lastClearedAreaTick = this.world.game.tick;
     }
 
     private updateLooseClearance(): void {

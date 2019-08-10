@@ -11,6 +11,7 @@ export default class World {
     public player: MainCharacter;
     public areas: Area[];
     public activeAreaVariant: AreaVariant;
+    public lastClearedAreaTick: number;
 
     public constructor(game: Game) {
         this.game = game;
@@ -18,6 +19,7 @@ export default class World {
         this.player = new MainCharacter(this);
         this.areas = [];
         this.activeAreaVariant = AreaVariant.BLUE;
+        this.lastClearedAreaTick = 0;
     }
 
     public update(): void {
