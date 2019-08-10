@@ -38,7 +38,7 @@ export default class World {
     }
 
     public updateRandomizeActiveAreaVariant(): void {
-        if (this.game.tick % this.game.secondsToTicks(3) === 0) {
+        if (this.game.tick % this.game.secondsToTicks(5) === 0) {
             this.activeAreaVariant = getRandomEnumValue(AreaVariant);
         }
     }

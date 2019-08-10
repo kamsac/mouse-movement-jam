@@ -15,6 +15,8 @@ export default class Area extends WorldObject {
     private targetRadius: number;
     private cleared: number;
     private maxHealth: number;
+    private ticksToLive: number;
+    private maxTicksToLive: number;
     private spring: any;
 
     constructor(world: World, areaOptions: AreaOptions) {
@@ -27,9 +29,15 @@ export default class Area extends WorldObject {
         this.targetRadius = areaOptions.radius;
         this.cleared = 0;
         this.maxHealth = areaOptions.radius;
+        this.maxTicksToLive = world.game.secondsToTicks(20);
+        this.ticksToLive = this.maxTicksToLive;
 
         this.spring = createSpring(0.04, 0.4, 0);
         this.spring.setDestination(this.targetRadius);
+    }
+
+    public getDyingProgress(): number {
+        return Math.min(1, 1 - (this.ticksToLive / this.maxTicksToLive));
     }
 
     public getClearProgress(): number {
@@ -47,13 +55,29 @@ export default class Area extends WorldObject {
         this.collisionRadius = this.spring.getCurrentValue();
 
         this.updateLooseClearance();
-        if (this.getClearProgress() >= 1) {
+
+        const areaLifeLeftProgress = (1 - this.getDyingProgress());
+        const clearProgress = this.getClearProgress();
+        if (clearProgress >= areaLifeLeftProgress && clearProgress > 0) {
             this.getCleared();
+        }
+
+        if (this.ticksToLive <= 0) {
+            this.spring.setDestination(0);
+            this.collisionRadius = this.spring.getCurrentValue();
+
+            if (this.collisionRadius <= 0) {
+                this.world.removeArea(this.id);
+            }
+        }
+
+        if (!this.isCollidingCenter(this.world.player)) {
+            this.ticksToLive--;
         }
     }
 
     public getCleared(): void {
-        this.world.game.addScore(100);
+        this.world.game.addScore(Math.floor(this.cleared * 10));
         this.world.removeArea(this.id);
         this.world.lastClearedAreaTick = this.world.game.tick;
     }
