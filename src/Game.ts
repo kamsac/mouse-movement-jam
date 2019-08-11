@@ -17,6 +17,7 @@ export default class Game {
     private fpsStats!: Stats;
     private readonly gameRenderer: GameRenderer;
     private score: number;
+    private lastGameScore: number;
 
     public constructor() {
         this.ticksPerSecond = 60;
@@ -26,6 +27,7 @@ export default class Game {
         this.maxUpdateLag = 500;
         this.input = new Input();
         this.world = new World(this);
+        this.lastGameScore = 0;
         this.score = 0;
         this.tick = 0;
         this.soundPlayer = new SoundPlayer();
@@ -35,6 +37,7 @@ export default class Game {
     }
 
     public restartWorld(): void {
+        this.lastGameScore = this.score;
         this.world = new World(this);
         this.score = 0;
         this.soundPlayer.playSound(SOUND_NAMES.GameOver, {volume: 0.3});
@@ -46,6 +49,10 @@ export default class Game {
 
     public getScore(): number {
         return this.score;
+    }
+
+    public getLastGameScore(): number {
+        return this.lastGameScore;
     }
 
     public secondsToTicks(seconds: number): number {

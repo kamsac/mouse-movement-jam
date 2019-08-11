@@ -1,17 +1,13 @@
 import Game from './Game';
 import World from './World';
-import Size from './Size';
 import MainCharacterRenderer from './MainCharacterRenderer';
 import AreaRenderer from './AreaRenderer';
 import Point from './Point';
 import { createSpring } from 'spring-animator';
 import EnemyRenderer from './EnemyRenderer';
 import AreaScoreRenderer from './AreaScoreRenderer';
-
-export const canvasSize: Size = {
-    width: 800,
-    height: 600,
-};
+import HudRenderer from './HudRenderer';
+import canvasSize from './canvasSize';
 
 interface CameraSettings {
     scale: number;
@@ -43,6 +39,7 @@ export default class GameRenderer {
     private areaRenderer: AreaRenderer;
     private areaScoreRenderer: AreaScoreRenderer;
     private enemyRenderer: EnemyRenderer;
+    private hudRenderer: HudRenderer;
 
     public constructor(game: Game) {
         this.game = game;
@@ -74,12 +71,13 @@ export default class GameRenderer {
         this.areaRenderer = new AreaRenderer(this.context);
         this.areaScoreRenderer = new AreaScoreRenderer(this.context);
         this.enemyRenderer = new EnemyRenderer(this.context);
+        this.hudRenderer = new HudRenderer(this.context);
     }
 
     public render(world: World): void {
         this.clearCanvas();
 
-        this.renderScore();
+        this.hudRenderer.render(world);
 
         this.updateScreenShake(world);
         this.centerCamera(world);
@@ -106,15 +104,6 @@ export default class GameRenderer {
         world.areas.forEach((area) => {
             this.areaScoreRenderer.render(area);
         });
-    }
-
-    private renderScore(): void {
-        const fontSize: number = 36;
-        this.context.font = `bold ${fontSize}px monospace`;
-        this.context.textAlign = 'left';
-        this.context.fillStyle = '#000';
-        this.context.lineWidth = 1;
-        this.context.fillText(`Score: ${this.game.getScore()}`, fontSize, fontSize);
     }
 
     private centerCamera(world: World): void {

@@ -1,5 +1,4 @@
 import Area from './Area';
-import AreaRenderer from './AreaRenderer';
 
 export default class AreaScoreRenderer {
     private context: CanvasRenderingContext2D;
@@ -14,7 +13,7 @@ export default class AreaScoreRenderer {
             return;
         }
         const fontSize: number = 32;
-        this.context.font = `bold ${fontSize}px`;
+        this.context.font = `bold ${fontSize}px monospace`;
         this.context.fillStyle = '#000';
         this.context.strokeStyle = '#fff';
         this.context.lineWidth = 1;
