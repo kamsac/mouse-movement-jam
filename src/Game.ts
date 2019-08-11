@@ -18,6 +18,8 @@ export default class Game {
     private readonly gameRenderer: GameRenderer;
     private score: number;
     private lastGameScore: number;
+    private readonly highScoreStorageKey: string;
+    private highScore: number;
 
     public constructor() {
         this.ticksPerSecond = 60;
@@ -29,6 +31,8 @@ export default class Game {
         this.world = new World(this);
         this.lastGameScore = 0;
         this.score = 0;
+        this.highScoreStorageKey = 'kamsacMouseMovementJamHighScore';
+        this.highScore = this.getHighScore();
         this.tick = 0;
         this.soundPlayer = new SoundPlayer();
         this.gameRenderer = new GameRenderer(this);
@@ -38,6 +42,7 @@ export default class Game {
 
     public restartWorld(): void {
         this.lastGameScore = this.score;
+        this.updateHighScore();
         this.world = new World(this);
         this.score = 0;
         this.soundPlayer.playSound(SOUND_NAMES.GameOver, {volume: 0.3});
@@ -53,6 +58,26 @@ export default class Game {
 
     public getLastGameScore(): number {
         return this.lastGameScore;
+    }
+
+    public updateHighScore(): void {
+        if (this.score > this.highScore) {
+            this.highScore = this.score;
+            window.localStorage.setItem(this.highScoreStorageKey, this.score.toString());
+        }
+    }
+
+    public getHighScore(): number {
+        if (this.highScore) {
+            return this.highScore;
+        }
+
+        const localStorageHighScore = window.localStorage.getItem(this.highScoreStorageKey);
+        if (localStorageHighScore) {
+            return +localStorageHighScore;
+        }
+
+        return 0;
     }
 
     public secondsToTicks(seconds: number): number {

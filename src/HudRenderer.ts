@@ -1,11 +1,16 @@
 import World from './World';
-import drawTable from './drawTable';
+import drawTable, {TableRowData} from './drawTable';
 import Point from './Point';
 import canvasSize from './canvasSize';
 import { createSpring } from 'spring-animator';
 
-const kindaCenterX: number = canvasSize.height * 0.35;
-const topLeftTablePosition: Point = new Point(kindaCenterX, canvasSize.height * 0.2);
+const kindaCenterX: number = canvasSize.height * 0.3;
+const topLeftTablePosition: Point = new Point(kindaCenterX, canvasSize.height * 0.15);
+const haxLastRowTableToKeepConstantValuesWidth: TableRowData = {
+    key: '',
+    value: '      ',
+    skipSemicolon: true,
+};
 
 export default class AreaRenderer {
     private context: CanvasRenderingContext2D;
@@ -34,7 +39,15 @@ export default class AreaRenderer {
                         key: 'LAST SCORE',
                         value: `${world.game.getLastGameScore()}`,
                     },
-                ], topLeftPosition: topLeftTablePosition, fontSize: fontSize, lineHeight: fontSize * 1.5,
+                    {
+                        key: 'HIGH SCORE',
+                        value: `${world.game.getHighScore()}`,
+                    },
+                    haxLastRowTableToKeepConstantValuesWidth,
+                ],
+                topLeftPosition: topLeftTablePosition,
+                fontSize: fontSize,
+                lineHeight: fontSize * 1.5,
                 color: `rgba(0,0,0, ${opacity})`,
             },
         );
