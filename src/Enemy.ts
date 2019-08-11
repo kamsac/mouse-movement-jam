@@ -32,8 +32,8 @@ export default class Enemy extends WorldObject {
         const stiffness = 0.01;
         const dampening = 0.7;
 
-        this.followPositionSpringX = createSpring(stiffness, dampening, world.mainCharacter.position.x);
-        this.followPositionSpringY = createSpring(stiffness, dampening, world.mainCharacter.position.y);
+        this.followPositionSpringX = createSpring(stiffness, dampening, this.position.x);
+        this.followPositionSpringY = createSpring(stiffness, dampening, this.position.y);
     }
 
     public update(): void {

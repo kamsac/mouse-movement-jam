@@ -44,7 +44,7 @@ export default class World {
     }
 
     public spawnEnemy(): void {
-        const distanceFromMainCharacter = 400;
+        const distanceFromMainCharacter = 1000;
         const movementDelta: Point = this.game.input.getMovementDelta();
         const offsetX = movementDelta.x > 0 ? distanceFromMainCharacter : -distanceFromMainCharacter;
         const offsetY = movementDelta.y > 0 ? distanceFromMainCharacter : -distanceFromMainCharacter;
