@@ -24,6 +24,17 @@ module.exports = {
                 exclude: /node_modules/,
                 loader: 'ts-loader',
             },
+            {
+                test: /\.(wav|ogg|mp3)$/i,
+                use: [
+                    {
+                        loader: 'url-loader',
+                        options: {
+                            limit: true,
+                        },
+                    },
+                ],
+            },
         ],
     },
     devServer: {

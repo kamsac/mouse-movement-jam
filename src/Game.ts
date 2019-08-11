@@ -2,12 +2,14 @@ import Stats from 'stats.js';
 import GameRenderer from './GameRenderer';
 import World from './World';
 import Input from './Input';
+import SoundPlayer, {SOUND_NAMES} from './sound/SoundPlayer';
 
 export default class Game {
     public readonly ticksPerSecond: number;
     public input: Input;
     public tick: number;
     public world: World;
+    public readonly soundPlayer: SoundPlayer;
     private readonly tickTime: number; // ms
     private lastTickTime: number; // ms
     private currentUpdateLag: number; // ms
@@ -26,6 +28,7 @@ export default class Game {
         this.world = new World(this);
         this.score = 0;
         this.tick = 0;
+        this.soundPlayer = new SoundPlayer();
         this.gameRenderer = new GameRenderer(this);
         this.initFpsStats();
         this.requestNextFrame();
@@ -34,6 +37,7 @@ export default class Game {
     public restartWorld(): void {
         this.world = new World(this);
         this.score = 0;
+        this.soundPlayer.playSound(SOUND_NAMES.GameOver, {volume: 0.3});
     }
 
     public addScore(points: number): void {

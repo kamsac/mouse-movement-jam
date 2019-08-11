@@ -3,6 +3,7 @@ import Point from './Point';
 import WorldObject from './WorldObject';
 import AreaVariant from './AreaVariant';
 import { createSpring } from 'spring-animator';
+import {SOUND_NAMES} from './sound/SoundPlayer';
 
 interface AreaOptions {
     variant: AreaVariant;
@@ -34,6 +35,8 @@ export default class Area extends WorldObject {
 
         this.spring = createSpring(0.04, 0.4, 0);
         this.spring.setDestination(this.targetRadius);
+
+        this.playSpawnSound();
     }
 
     public getDyingProgress(): number {
@@ -46,6 +49,7 @@ export default class Area extends WorldObject {
 
     public applyClearing(amount: number): void {
         this.cleared += amount;
+        this.world.game.soundPlayer.playSound(SOUND_NAMES.ChargeSound, {detune: this.getClearProgress() * 100000});
     }
 
     public update(): void {
@@ -82,6 +86,7 @@ export default class Area extends WorldObject {
 
     public getCleared(): void {
         this.world.game.addScore(this.getCurrentScoreWorth());
+        this.world.game.soundPlayer.playSound(SOUND_NAMES.EnemySpawn);
         this.world.lastClearedAreaTick = this.world.game.tick;
         this.world.spawnEnemy();
         this.world.removeArea(this.id);
@@ -93,5 +98,15 @@ export default class Area extends WorldObject {
                 this.applyClearing(-0.25);
             }
         }
+    }
+
+    private playSpawnSound(): void {
+        const spawnSounds = [
+            SOUND_NAMES.AreaSpawn1,
+            SOUND_NAMES.AreaSpawn2,
+            SOUND_NAMES.AreaSpawn3,
+        ];
+        const randomSpawnSound = spawnSounds[Math.floor(Math.random() * 3)];
+        this.world.game.soundPlayer.playSound(randomSpawnSound, {volume: 0.2});
     }
 }
