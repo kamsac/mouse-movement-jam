@@ -57,8 +57,57 @@ export default class World {
 
     private updateRandomizeActiveAreaVariant(): void {
         if (this.game.tick % this.game.secondsToTicks(5) === 0) {
-            this.activeAreaVariant = getRandomEnumValue(AreaVariant);
+            this.activeAreaVariant = this.getNextActiveAreaVariantWithQuickAndDirtyHax();
         }
+    }
+
+    private getMostPopularAreaVariantWithQuickAndDirtyHax(): AreaVariant {
+        const countedByAreaVariant = {
+            [AreaVariant.RED]: 0,
+            [AreaVariant.GREEN]: 0,
+            [AreaVariant.BLUE]: 0,
+        };
+
+        this.areas.forEach((area) => {
+            countedByAreaVariant[area.variant]++;
+        });
+
+        if (countedByAreaVariant[AreaVariant.BLUE] > countedByAreaVariant[AreaVariant.GREEN] && countedByAreaVariant[AreaVariant.BLUE] > countedByAreaVariant[AreaVariant.RED]) {
+            return AreaVariant.BLUE;
+        }
+
+        if (countedByAreaVariant[AreaVariant.GREEN] > countedByAreaVariant[AreaVariant.RED] && countedByAreaVariant[AreaVariant.GREEN] > countedByAreaVariant[AreaVariant.BLUE]) {
+            return AreaVariant.GREEN;
+        }
+
+        return AreaVariant.RED;
+    }
+
+    private getNextActiveAreaVariantWithQuickAndDirtyHax(): AreaVariant {
+        const countedByAreaVariant = {
+            [AreaVariant.RED]: 0,
+            [AreaVariant.GREEN]: 0,
+            [AreaVariant.BLUE]: 0,
+        };
+
+        this.areas.forEach((area) => {
+            countedByAreaVariant[area.variant]++;
+        });
+
+        const possibleVariants: AreaVariant[] = [];
+        if (countedByAreaVariant[AreaVariant.RED] > 0) possibleVariants.push(AreaVariant.RED);
+        if (countedByAreaVariant[AreaVariant.GREEN] > 0) possibleVariants.push(AreaVariant.GREEN);
+        if (countedByAreaVariant[AreaVariant.BLUE] > 0) possibleVariants.push(AreaVariant.BLUE);
+
+        const nextVariant: AreaVariant | undefined = possibleVariants
+            .sort(() => Math.random() - 0.5)
+            .find(() => true);
+
+        if (!nextVariant) {
+            return getRandomEnumValue(AreaVariant);
+        }
+
+        return nextVariant;
     }
 
     private updateSpawningRandomAreas(): void {
