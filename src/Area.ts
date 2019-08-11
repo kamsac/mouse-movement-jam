@@ -71,20 +71,21 @@ export default class Area extends WorldObject {
             }
         }
 
-        if (!this.isCollidingCenter(this.world.player)) {
+        if (!this.isCollidingCenter(this.world.mainCharacter)) {
             this.ticksToLive--;
         }
     }
 
     public getCleared(): void {
         this.world.game.addScore(Math.floor(this.cleared * 10));
-        this.world.removeArea(this.id);
         this.world.lastClearedAreaTick = this.world.game.tick;
+        this.world.spawnEnemy();
+        this.world.removeArea(this.id);
     }
 
     private updateLooseClearance(): void {
         if (this.cleared > 0) {
-            if (!this.isColliding(this.world.player)) {
+            if (!this.isColliding(this.world.mainCharacter)) {
                 this.applyClearing(-0.25);
             }
         }

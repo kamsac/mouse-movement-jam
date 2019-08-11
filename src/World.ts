@@ -4,29 +4,35 @@ import Area from './Area';
 import Point from './Point';
 import AreaVariant from './AreaVariant';
 import getRandomEnumValue from './getRandomEnumValue';
+import Enemy from './Enemy';
 
 export default class World {
     public game: Game;
     public tick: number;
-    public player: MainCharacter;
+    public mainCharacter: MainCharacter;
     public areas: Area[];
+    public enemies: Enemy[];
     public activeAreaVariant: AreaVariant;
     public lastClearedAreaTick: number;
 
     public constructor(game: Game) {
         this.game = game;
         this.tick = 0;
-        this.player = new MainCharacter(this);
+        this.mainCharacter = new MainCharacter(this);
         this.areas = [];
+        this.enemies = [];
         this.activeAreaVariant = AreaVariant.BLUE;
         this.lastClearedAreaTick = 0;
     }
 
     public update(): void {
         this.tick++;
-        this.player.update();
+        this.mainCharacter.update();
         this.areas.forEach((area) => {
             area.update();
+        });
+        this.enemies.forEach((enemy) => {
+            enemy.update();
         });
 
         this.updateSpawningRandomAreas();
@@ -37,7 +43,19 @@ export default class World {
         this.areas = this.areas.filter((area) => area.id !== id);
     }
 
-    public updateRandomizeActiveAreaVariant(): void {
+    public spawnEnemy(): void {
+        const distanceFromMainCharacter = 400;
+        const movementDelta: Point = this.game.input.getMovementDelta();
+        const offsetX = movementDelta.x > 0 ? distanceFromMainCharacter : -distanceFromMainCharacter;
+        const offsetY = movementDelta.y > 0 ? distanceFromMainCharacter : -distanceFromMainCharacter;
+        const position: Point = new Point(
+            this.mainCharacter.position.x + offsetX,
+            this.mainCharacter.position.y + offsetY,
+        );
+        this.enemies.push(new Enemy(this, {position}));
+    }
+
+    private updateRandomizeActiveAreaVariant(): void {
         if (this.game.tick % this.game.secondsToTicks(5) === 0) {
             this.activeAreaVariant = getRandomEnumValue(AreaVariant);
         }
@@ -126,18 +144,18 @@ export default class World {
     }
 
     private spawnRandomArea(): void {
-        const areaRadiusMin: number = this.player.collisionRadius;
-        const areaRadiusMax: number = areaRadiusMin * 5;
+        const areaRadiusMin: number = this.mainCharacter.collisionRadius * 1.5;
+        const areaRadiusMax: number = areaRadiusMin * 3;
         const areaRadius: number = Math.floor(Math.random() * areaRadiusMax) + areaRadiusMin;
-        const positionOffsetRandomRange: number = 200;
+        const positionOffsetRandomRange: number = 300;
 
         this.areas.push(
             new Area(
                 this,
                 {
                     position: new Point(
-                        this.player.position.x + Math.floor(Math.random() * positionOffsetRandomRange*2) - positionOffsetRandomRange,
-                        this.player.position.y + Math.floor(Math.random() * positionOffsetRandomRange*2) - positionOffsetRandomRange,
+                        this.mainCharacter.position.x + Math.floor(Math.random() * positionOffsetRandomRange*2) - positionOffsetRandomRange,
+                        this.mainCharacter.position.y + Math.floor(Math.random() * positionOffsetRandomRange*2) - positionOffsetRandomRange,
                     ),
                     variant: getRandomEnumValue(AreaVariant),
                     radius: areaRadius,

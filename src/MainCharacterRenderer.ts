@@ -7,15 +7,15 @@ export default class MainCharacterRenderer {
         this.context = context;
     }
 
-    public render(player: MainCharacter): void {
+    public render(mainCharacter: MainCharacter): void {
         this.context.fillStyle = '#444';
         this.context.strokeStyle = '#000';
         this.context.lineWidth = 2;
         this.context.beginPath();
         this.context.arc(
-            player.position.x,
-            player.position.y,
-            player.collisionRadius,
+            mainCharacter.position.x,
+            mainCharacter.position.y,
+            mainCharacter.collisionRadius,
             0,
             Math.PI * 2
         );
@@ -23,18 +23,18 @@ export default class MainCharacterRenderer {
         this.context.stroke();
         this.context.fill();
 
-        this.renderActiveArea(player);
+        this.renderActiveArea(mainCharacter);
     }
 
-    public renderActiveArea(player: MainCharacter): void {
-        this.context.fillStyle = AreaRenderer.visualSettingsByVariant[player.world.activeAreaVariant].color;
+    public renderActiveArea(mainCharacter: MainCharacter): void {
+        this.context.fillStyle = AreaRenderer.visualSettingsByVariant[mainCharacter.world.activeAreaVariant].color;
         this.context.strokeStyle = '#000';
         this.context.lineWidth = 2;
         this.context.beginPath();
         this.context.arc(
-            player.position.x,
-            player.position.y,
-            player.collisionRadius / 2,
+            mainCharacter.position.x,
+            mainCharacter.position.y,
+            mainCharacter.collisionRadius / 2,
             0,
             Math.PI * 2
         );

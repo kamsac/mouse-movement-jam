@@ -2,6 +2,7 @@ import World from './World';
 import Point from './Point';
 import WorldObject from './WorldObject';
 import Area from './Area';
+import Enemy from './Enemy';
 
 export default class MainCharacter extends WorldObject {
     public position: Point;
@@ -25,6 +26,11 @@ export default class MainCharacter extends WorldObject {
 
         this.currentArea = this.findClosestCollidingArea();
         this.updateAreaClearance();
+
+        const collidingEnemy: Enemy | undefined = this.world.enemies.find((enemy) => this.isColliding(enemy));
+        if (collidingEnemy) {
+            this.world.game.restartWorld();
+        }
     }
 
     private findClosestCollidingArea(): Area | undefined {

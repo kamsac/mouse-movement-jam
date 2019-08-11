@@ -5,6 +5,7 @@ import MainCharacterRenderer from './MainCharacterRenderer';
 import AreaRenderer from './AreaRenderer';
 import Point from './Point';
 import { createSpring } from 'spring-animator';
+import EnemyRenderer from './EnemyRenderer';
 
 export const canvasSize: Size = {
     width: 800,
@@ -39,6 +40,7 @@ export default class GameRenderer {
     private cameraSettings: CameraSettings;
     private mainCharacterRenderer: MainCharacterRenderer;
     private areaRenderer: AreaRenderer;
+    private enemyRenderer: EnemyRenderer;
 
     public constructor(game: Game) {
         this.game = game;
@@ -61,13 +63,14 @@ export default class GameRenderer {
         };
 
         this.cameraSpring = {
-            x: createSpring(this.cameraSettings.followSpring.stiffness, this.cameraSettings.followSpring.dampening, this.game.world.player.position.x),
-            y: createSpring(this.cameraSettings.followSpring.stiffness, this.cameraSettings.followSpring.dampening, this.game.world.player.position.y),
+            x: createSpring(this.cameraSettings.followSpring.stiffness, this.cameraSettings.followSpring.dampening, this.game.world.mainCharacter.position.x),
+            y: createSpring(this.cameraSettings.followSpring.stiffness, this.cameraSettings.followSpring.dampening, this.game.world.mainCharacter.position.y),
         };
 
         this.targetCameraPosition = new Point(0, 0);
         this.mainCharacterRenderer = new MainCharacterRenderer(this.context);
         this.areaRenderer = new AreaRenderer(this.context);
+        this.enemyRenderer = new EnemyRenderer(this.context);
     }
 
     public render(world: World): void {
@@ -93,7 +96,10 @@ export default class GameRenderer {
         world.areas.forEach((area) => {
             this.areaRenderer.render(area);
         });
-        this.mainCharacterRenderer.render(world.player);
+        this.mainCharacterRenderer.render(world.mainCharacter);
+        world.enemies.forEach((enemy) => {
+            this.enemyRenderer.render(enemy);
+        });
     }
 
     private renderScore(): void {
@@ -106,8 +112,8 @@ export default class GameRenderer {
     }
 
     private centerCamera(world: World): void {
-        this.targetCameraPosition.x = -world.player.position.x * this.cameraSettings.scale + canvasSize.width / 2;
-        this.targetCameraPosition.y = -world.player.position.y * this.cameraSettings.scale + canvasSize.height / 2;
+        this.targetCameraPosition.x = -world.mainCharacter.position.x * this.cameraSettings.scale + canvasSize.width / 2;
+        this.targetCameraPosition.y = -world.mainCharacter.position.y * this.cameraSettings.scale + canvasSize.height / 2;
     }
 
     private offsetCamera(): void {
@@ -121,8 +127,8 @@ export default class GameRenderer {
     }
 
     private updateScreenShake(world: World): void {
-        const force: number = world.player.currentArea
-            ? world.player.currentArea.getClearProgress() * world.player.currentArea.collisionRadius * 4
+        const force: number = world.mainCharacter.currentArea
+            ? world.mainCharacter.currentArea.getClearProgress() * world.mainCharacter.currentArea.collisionRadius * 4
             : 0;
         this.setScreenShake(force);
 

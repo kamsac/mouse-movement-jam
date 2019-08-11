@@ -12,6 +12,8 @@
   "author": "Kamil Sacewicz",
   "license": "ISC",
   "devDependencies": {
+    "@types/shortid": "^0.0.29",
+    "@types/stats.js": "^0.17.0",
     "html-webpack-plugin": "^3.2.0",
     "ts-loader": "^6.0.4",
     "typescript": "^3.5.3",
@@ -20,8 +22,6 @@
     "webpack-dev-server": "^3.7.2"
   },
   "dependencies": {
-    "@types/shortid": "^0.0.29",
-    "@types/stats.js": "^0.17.0",
     "shortid": "^2.2.14",
     "spring-animator": "^2.0.0",
     "stats.js": "^0.17.0"
