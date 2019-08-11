@@ -51,24 +51,5 @@ export default class AreaRenderer {
                 color: `rgba(0,0,0, ${opacity})`,
             },
         );
-
-    }
-
-    private renderScore(world: World): void {
-        const fontSize: number = 36;
-        this.context.font = `bold ${fontSize}px monospace`;
-        this.context.textAlign = 'left';
-        this.context.fillStyle = '#000';
-        this.context.lineWidth = 1;
-        this.context.fillText(`Score: ${world.game.getScore()}`, fontSize, fontSize);
-    }
-
-    private renderLastGameScore(world: World): void {
-        const fontSize: number = 36;
-        this.context.font = `bold ${fontSize}px monospace`;
-        this.context.textAlign = 'left';
-        this.context.fillStyle = '#000';
-        this.context.lineWidth = 1;
-        this.context.fillText(`Last score: ${world.game.getScore()}`, canvasSize.width / 2, canvasSize.height * 0.25);
     }
 }
