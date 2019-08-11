@@ -76,8 +76,12 @@ export default class Area extends WorldObject {
         }
     }
 
+    public getCurrentScoreWorth(): number {
+        return Math.floor(this.cleared * 10);
+    }
+
     public getCleared(): void {
-        this.world.game.addScore(Math.floor(this.cleared * 10));
+        this.world.game.addScore(this.getCurrentScoreWorth());
         this.world.lastClearedAreaTick = this.world.game.tick;
         this.world.spawnEnemy();
         this.world.removeArea(this.id);

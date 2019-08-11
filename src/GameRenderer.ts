@@ -6,6 +6,7 @@ import AreaRenderer from './AreaRenderer';
 import Point from './Point';
 import { createSpring } from 'spring-animator';
 import EnemyRenderer from './EnemyRenderer';
+import AreaScoreRenderer from './AreaScoreRenderer';
 
 export const canvasSize: Size = {
     width: 800,
@@ -40,6 +41,7 @@ export default class GameRenderer {
     private cameraSettings: CameraSettings;
     private mainCharacterRenderer: MainCharacterRenderer;
     private areaRenderer: AreaRenderer;
+    private areaScoreRenderer: AreaScoreRenderer;
     private enemyRenderer: EnemyRenderer;
 
     public constructor(game: Game) {
@@ -70,6 +72,7 @@ export default class GameRenderer {
         this.targetCameraPosition = new Point(0, 0);
         this.mainCharacterRenderer = new MainCharacterRenderer(this.context);
         this.areaRenderer = new AreaRenderer(this.context);
+        this.areaScoreRenderer = new AreaScoreRenderer(this.context);
         this.enemyRenderer = new EnemyRenderer(this.context);
     }
 
@@ -99,6 +102,9 @@ export default class GameRenderer {
         this.mainCharacterRenderer.render(world.mainCharacter);
         world.enemies.forEach((enemy) => {
             this.enemyRenderer.render(enemy);
+        });
+        world.areas.forEach((area) => {
+            this.areaScoreRenderer.render(area);
         });
     }
 

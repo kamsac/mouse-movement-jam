@@ -89,6 +89,5 @@ export default class AreaRenderer {
         this.context.fill();
 
         this.context.fillStyle = '#000';
-        this.context.fillText(``, area.position.x, area.position.y);
     }
 }
