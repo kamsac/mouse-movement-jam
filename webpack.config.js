@@ -44,7 +44,7 @@ module.exports = {
     },
     plugins: [
         new HtmlWebpackPlugin({
-            title: 'Mouse Movement Jam',
+            title: 'Elkronez - Mouse Movement Jam',
             template: path.resolve(__dirname, 'src', 'index.html')
         }),
     ],
